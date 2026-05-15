@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#1a3a5c"/>
+  <rect width="512" height="512" rx="96" fill="url(#grad)"/>
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a3a5c"/>
+      <stop offset="100%" style="stop-color:#2d6a9f"/>
+    </linearGradient>
+  </defs>
+  <!-- Graduation cap -->
+  <polygon points="256,140 420,210 256,280 92,210" fill="#f0a500"/>
+  <rect x="236" y="280" width="40" height="80" rx="4" fill="#f0a500"/>
+  <ellipse cx="256" cy="360" rx="50" ry="20" fill="#f0a500"/>
+  <rect x="400" y="210" width="12" height="70" rx="6" fill="#fbbf24"/>
+  <circle cx="406" cy="285" r="10" fill="#fbbf24"/>
+  <!-- GL text -->
+  <text x="256" y="420" text-anchor="middle" font-family="Arial" font-weight="bold" 
+        font-size="72" fill="#f0a500" opacity="0.9">GL</text>
+</svg>

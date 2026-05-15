@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { -webkit-tap-highlight-color: transparent; }
+  html { font-family: 'DM Sans', sans-serif; }
+  body {
+    background: #070e17;
+    color: #e2e8f0;
+    min-height: 100dvh;
+    overflow-x: hidden;
+  }
+  .bangla { font-family: 'Hind Siliguri', sans-serif; }
+}
+
+@layer components {
+  .glass {
+    background: rgba(26, 58, 92, 0.25);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .glass-dark {
+    background: rgba(7, 14, 23, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .gold-gradient {
+    background: linear-gradient(135deg, #f0a500 0%, #fbbf24 50%, #f0a500 100%);
+  }
+  .card {
+    @apply glass rounded-2xl p-4 shadow-xl;
+  }
+  .btn-primary {
+    @apply gold-gradient text-navy-900 font-semibold rounded-xl px-5 py-3 
+           active:scale-95 transition-transform shadow-lg shadow-gold-500/20;
+  }
+  .btn-ghost {
+    @apply glass text-slate-300 rounded-xl px-4 py-2.5 
+           active:scale-95 transition-all hover:bg-white/10;
+  }
+  .input-field {
+    @apply w-full bg-navy-900/60 border border-white/10 rounded-xl px-4 py-3 
+           text-white placeholder-slate-500 focus:outline-none focus:border-gold-500/60 
+           focus:ring-1 focus:ring-gold-500/30 transition-all bangla;
+  }
+  .grade-badge {
+    @apply inline-flex items-center justify-center w-10 h-10 rounded-xl 
+           font-bold text-sm font-mono;
+  }
+  .nav-item {
+    @apply flex flex-col items-center gap-1 py-2 px-4 rounded-xl 
+           transition-all active:scale-95;
+  }
+}
+
+/* Noise texture overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(240,165,0,0.3); border-radius: 2px; }
+
+/* Safe area for mobile */
+.safe-bottom { padding-bottom: env(safe-area-inset-bottom, 16px); }
+.safe-top    { padding-top:    env(safe-area-inset-top, 0px); }
+
+/* Print styles */
+@media print {
+  body { background: white !important; color: black !important; }
+  .no-print { display: none !important; }
+  .print-only { display: block !important; }
+}
