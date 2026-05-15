@@ -127,8 +127,9 @@ export default function Upload() {
     try {
       const rows = preview.map(s=>({...s, exam_year:examYear, exam_type:examType}))
       // Delete same class+year+exam first
-      await supabase.from('students').delete()
-        .eq('class_num',classNum).eq('exam_year',examYear).eq('exam_type',examType)
+    const { error: delErr } = await supabase.from('students').delete()
+  .match({ class_num:classNum, exam_year:examYear, exam_type:examType })
+if (delErr) throw delErr
       for (let i=0; i<rows.length; i+=50) {
         const {error:err} = await supabase.from('students').insert(rows.slice(i,i+50))
         if (err) throw err
