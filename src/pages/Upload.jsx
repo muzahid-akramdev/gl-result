@@ -121,22 +121,29 @@ export default function Upload() {
     } catch(e) { setError(e.message) }
   }
 
-  async function handleUpload() {
-    if (!preview.length) return
+async function handleUpload() {
+    if (preview.length === 0) return
     setLoading(true); setError('')
     try {
-      const rows = preview.map(s=>({...s, exam_year:examYear, exam_type:examType}))
-      // Delete same class+year+exam first
-    const { error: delErr } = await supabase.from('students').delete()
-  .match({ class_num:classNum, exam_year:examYear, exam_type:examType })
-if (delErr) throw delErr
-      for (let i=0; i<rows.length; i+=50) {
-        const {error:err} = await supabase.from('students').insert(rows.slice(i,i+50))
+      // Delete existing - সব row delete করে
+      const { error: delErr } = await supabase
+        .from('students')
+        .delete()
+        .neq('id', '00000000-0000-0000-0000-000000000000')
+      if (delErr) throw delErr
+
+      // Insert all in chunks
+      const chunks = []
+      for (let i = 0; i < preview.length; i += 50) chunks.push(preview.slice(i, i+50))
+      for (const chunk of chunks) {
+        const { error: err } = await supabase.from('students').insert(chunk)
         if (err) throw err
       }
       setSuccess(true)
-      setTimeout(()=>navigate('/students'),1500)
-    } catch(e) { setError('আপলোড ব্যর্থ: '+e.message) }
+      setTimeout(() => navigate('/students'), 1500)
+    } catch (e) {
+      setError('আপলোড ব্যর্থ: ' + e.message)
+    }
     setLoading(false)
   }
 
