@@ -117,7 +117,7 @@ export default function Upload() {
     if (preview.length === 0) return
     setLoading(true); setError('')
     try {
-      await supabase.rpc('truncate_students')
+      // truncate removed
       const tagged = preview.map(s => ({
         ...s,
         class_num: classNum,
