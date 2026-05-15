@@ -5,9 +5,6 @@ import { CLASS_GROUPS, EXAM_TYPES } from '../lib/grades'
 import { Upload as UploadIcon, FileSpreadsheet, CheckCircle, AlertCircle, Trash2, Download } from 'lucide-react'
 import * as XLSX from 'xlsx'
 
-// Class 6-8 col map (0-indexed): C=2 D=3 বাং১ | E=4 F=5 বাং২ | G=6 ইং১ | H=7 ইং২
-// I=8 J=9 গণিত | K=10 L=11 বিজ্ঞান | M=12 N=13 বাওবি | O=14 P=15 ইসলাম
-// Q=16 R=17 কৃষি | S=18 তথ্যপ্রযুক্তি
 const MAP_6_8 = r => ({
   bangla1_naib:n(r[2]),   bangla1_written:n(r[3]),
   bangla2_naib:n(r[4]),   bangla2_written:n(r[5]),
@@ -20,9 +17,6 @@ const MAP_6_8 = r => ({
   ict:n(r[18]),
 })
 
-// Class 9-10 col map: C=2 D=3 বাং১ | E=4 F=5 বাং২ | G=6 ইং১ | H=7 ইং২
-// I=8 J=9 গণিত | K=10 L=11 পদার্থ | M=12 N=13 রসায়ন | O=14 P=15 জীব
-// Q=16 R=17 উচ্চ/কৃষি | S=18 T=19 বাবিপ | U=20 V=21 ইসলাম | W=22 তথ্যপ্রযুক্তি
 const MAP_9_10 = r => ({
   bangla1_naib:n(r[2]),      bangla1_written:n(r[3]),
   bangla2_naib:n(r[4]),      bangla2_written:n(r[5]),
@@ -68,7 +62,6 @@ function parseFile(file, classNum) {
   })
 }
 
-// Generate demo Excel template
 function downloadTemplate(classNum) {
   const is68 = ['6','7','8'].includes(String(classNum))
   const wb = XLSX.utils.book_new()
@@ -83,7 +76,6 @@ function downloadTemplate(classNum) {
     headers2.push(...['নৈব','লিখিত','নৈব','লিখিত','','','নৈব','লিখিত','নৈব','লিখিত','নৈব','লিখিত','নৈব','লিখিত','নৈব','লিখিত','নৈব','লিখিত','নৈব','লিখিত',''])
   }
 
-  // Title rows
   const titleRows = [
     ['গোল্ডেন লাইফ পাবলিক স্কুল'],
     ['পাইকরতলী, কাজিপুর, সিরাজগঞ্জ'],
@@ -121,26 +113,30 @@ export default function Upload() {
     } catch(e) { setError(e.message) }
   }
 
-async function handleUpload() {
-  if (preview.length === 0) return
-  setLoading(true); setError('')
-  try {
-    await supabase.rpc('truncate_students')
-    const tagged = preview.map(s => ({
-      ...s,
-      class_num: classNum,
-      exam_year: examYear,
-      exam_type: examType,
-    }))
-    const chunks = []
-    for (let i = 0; i < tagged.length; i += 50) chunks.push(tagged.slice(i, i+50))
-    for (const chunk of chunks) {
-      const { error: err } = await supabase.from('students').insert(chunk)
-      if (err) throw err
+  async function handleUpload() {
+    if (preview.length === 0) return
+    setLoading(true); setError('')
+    try {
+      await supabase.rpc('truncate_students')
+      const tagged = preview.map(s => ({
+        ...s,
+        class_num: classNum,
+        exam_year: examYear,
+        exam_type: examType,
+      }))
+      const chunks = []
+      for (let i = 0; i < tagged.length; i += 50) chunks.push(tagged.slice(i, i+50))
+      for (const chunk of chunks) {
+        const { error: err } = await supabase.from('students').insert(chunk)
+        if (err) throw err
+      }
+      setSuccess(true)
+      setTimeout(() => navigate('/students'), 1500)
+    } catch (e) {
+      setError('আপলোড ব্যর্থ: ' + e.message)
     }
-    setSuccess(true)
-    setTimeout(() => navigate('/students'), 1500)
-  } catch (e) {
+    setLoading(false)
+  }
 
   if (success) return (
     <div className="flex flex-col items-center justify-center h-64 gap-4 animate-scale-in">
@@ -153,11 +149,9 @@ async function handleUpload() {
 
   return (
     <div className="px-4 py-5 space-y-4 animate-fade-in">
-      {/* Config */}
       <div className="card space-y-4">
         <h2 className="font-display text-lg font-bold text-gold-400 bangla">Excel আপলোড</h2>
 
-        {/* Year */}
         <div>
           <label className="text-xs text-slate-400 bangla mb-1.5 block">পরীক্ষার সাল</label>
           <div className="flex gap-2 overflow-x-auto no-scrollbar">
@@ -168,7 +162,6 @@ async function handleUpload() {
           </div>
         </div>
 
-        {/* Exam type */}
         <div>
           <label className="text-xs text-slate-400 bangla mb-1.5 block">পরীক্ষার ধরন</label>
           <div className="flex flex-col gap-1.5">
@@ -179,7 +172,6 @@ async function handleUpload() {
           </div>
         </div>
 
-        {/* Class */}
         <div>
           <label className="text-xs text-slate-400 bangla mb-1.5 block">শ্রেণি</label>
           <div className="flex gap-2 flex-wrap">
@@ -191,13 +183,11 @@ async function handleUpload() {
         </div>
       </div>
 
-      {/* Template download */}
       <button onClick={()=>downloadTemplate(classNum)}
         className="w-full flex items-center justify-center gap-2 glass py-3 rounded-xl text-sm text-gold-400 bangla hover:bg-white/5 transition-all">
         <Download size={16}/> ডেমো Excel ডাউনলোড করুন (শ্রেণি {CLASS_GROUPS[classNum]?.label})
       </button>
 
-      {/* File drop */}
       <button onClick={()=>inputRef.current?.click()}
         className={`w-full border-2 border-dashed rounded-2xl p-8 flex flex-col items-center gap-3 transition-all ${file?'border-gold-500/50 bg-gold-500/5':'border-white/10 hover:border-white/20'}`}>
         <div className="w-14 h-14 rounded-xl gold-gradient flex items-center justify-center shadow-lg shadow-gold-500/20">
@@ -218,7 +208,6 @@ async function handleUpload() {
       <input ref={inputRef} type="file" accept=".xlsx,.xls,.xlsm" className="hidden"
         onChange={e=>handleFile(e.target.files[0])}/>
 
-      {/* Preview */}
       {preview.length>0&&(
         <div className="card space-y-3">
           <h3 className="text-sm font-semibold text-slate-300 bangla">প্রিভিউ — {preview.length} জন</h3>
