@@ -122,30 +122,24 @@ export default function Upload() {
   }
 
 async function handleUpload() {
-    if (preview.length === 0) return
-    setLoading(true); setError('')
-    try {
-      // Delete existing - সব row delete করে
-      const { error: delErr } = await supabase
+  if (preview.length === 0) return
+  setLoading(true); setError('')
+  try {
+    const chunks = []
+    for (let i = 0; i < preview.length; i += 50) chunks.push(preview.slice(i, i+50))
+    for (const chunk of chunks) {
+      const { error: err } = await supabase
         .from('students')
-        .delete()
-        .neq('id', '00000000-0000-0000-0000-000000000000')
-      if (delErr) throw delErr
-
-      // Insert all in chunks
-      const chunks = []
-      for (let i = 0; i < preview.length; i += 50) chunks.push(preview.slice(i, i+50))
-      for (const chunk of chunks) {
-        const { error: err } = await supabase.from('students').insert(chunk)
-        if (err) throw err
-      }
-      setSuccess(true)
-      setTimeout(() => navigate('/students'), 1500)
-    } catch (e) {
-      setError('আপলোড ব্যর্থ: ' + e.message)
+        .upsert(chunk, { onConflict: 'roll' })
+      if (err) throw err
     }
-    setLoading(false)
+    setSuccess(true)
+    setTimeout(() => navigate('/students'), 1500)
+  } catch (e) {
+    setError('আপলোড ব্যর্থ: ' + e.message)
   }
+  setLoading(false)
+}
 
   if (success) return (
     <div className="flex flex-col items-center justify-center h-64 gap-4 animate-scale-in">
