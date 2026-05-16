@@ -32,7 +32,7 @@ export function buildMarksheetHTML(student, opts = {}) {
 
   <div style="background:linear-gradient(135deg,#0d9488,#0f766e,#115e59);overflow:hidden">
     <div style="${F}padding:16px 22px 0;text-align:center">
-      <div style="width:52px;height:52px;border-radius:14px;margin:0 auto 8px;background:linear-gradient(135deg,#fbbf24,#f59e0b);box-shadow:0 6px 20px rgba(251,191,36,0.4);display:flex;align-items:center;justify-content:center">
+      <div style="width:52px;height:52px;border-radius:14px;margin:0 auto 8px;background:linear-gradient(135deg,#fbbf24,#f59e0b);box-shadow:0 6px 20px rgba(251,191,36,0.4);display:inline-flex;align-items:center;justify-content:center">
         <span style="font-size:24px">ðŸŽ“</span>
       </div>
       <h1 style="${F}font-size:17px;font-weight:700;color:#fff;margin:0;line-height:1.2">à¦—à§‹à¦²à§à¦¡à§‡à¦¨ à¦²à¦¾à¦‡à¦« à¦ªà¦¾à¦¬à¦²à¦¿à¦• à¦¸à§à¦•à§à¦²</h1>
@@ -117,6 +117,57 @@ export function buildMarksheetHTML(student, opts = {}) {
 </div>`
 }
 
+// Opens a new window with proper font, then triggers print (Save as PDF)
+export function generatePDF(students, filename) {
+  const list = Array.isArray(students) ? students : [students]
+  const html = list.map((st, i) => buildMarksheetHTML(st, { pageBreak: i > 0 })).join('')
+
+  const win = window.open('', '_blank', 'width=700,height=900')
+  if (!win) { alert('Popup blocked! Please allow popups for this site.'); return }
+
+  win.document.write(`<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <title>${filename}</title>
+  <link rel="preconnect" href="https://fonts.maateen.me">
+  <link rel="stylesheet" href="https://fonts.maateen.me/kalpurush/font.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: white; font-family: 'Kalpurush','SolaimanLipi',sans-serif; }
+    @page { size: A4 portrait; margin: 0; }
+    @media print {
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    }
+  </style>
+</head>
+<body>${html}</body>
+</html>`)
+  win.document.close()
+
+  // Wait for font to load before printing
+  win.addEventListener('load', () => {
+    setTimeout(() => {
+      win.focus()
+      win.print()
+    }, 1200)
+  })
+}
+  <div style="margin:0 12px 10px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px">
+    ${['à¦¶à¦¿à¦•à§à¦·à¦¾à¦°à§à¦¥à§€à¦° à¦¸à§à¦¬à¦¾à¦•à§à¦·à¦°', 'à¦…à¦­à¦¿à¦­à¦¾à¦¬à¦•à§‡à¦° à¦¸à§à¦¬à¦¾à¦•à§à¦·à¦°', 'à¦…à¦§à§à¦¯à¦•à§à¦·à§‡à¦° à¦¸à§€à¦²à¦®à§‹à¦¹à¦°'].map(l => `
+    <div style="text-align:center">
+      <div style="height:26px;border-bottom:1px dashed #94a3b8;margin-bottom:4px"></div>
+      <p style="${F}font-size:9px;color:#94a3b8;margin:0">${l}</p>
+    </div>`).join('')}
+  </div>
+
+  <div style="padding:6px 14px;text-align:center;background:linear-gradient(90deg,#0d9488,#115e59)">
+    <p style="${F}font-size:9px;color:#ccfbf1;margin:0">à¦à¦‡ à¦®à¦¾à¦°à§à¦•à¦¶à¦¿à¦Ÿ à¦•à¦®à§à¦ªà¦¿à¦‰à¦Ÿà¦¾à¦° à¦ªà§à¦°à¦¦à¦¤à§à¦¤ à¦à¦¬à¦‚ à¦¸à§à¦¬à¦¾à¦•à§à¦·à¦° à¦›à¦¾à¦¡à¦¼à¦¾à¦‡ à¦¬à§ˆà¦§</p>
+  </div>
+
+</div>`
+}
+
 async function loadHtml2PDF() {
   if (window.html2pdf) return
   await new Promise((resolve, reject) => {
@@ -168,4 +219,4 @@ export async function generatePDF(students, filename) {
   } finally {
     document.body.removeChild(wrap)
   }
-      }
+}
