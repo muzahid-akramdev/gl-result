@@ -32,17 +32,24 @@ export default function Marksheet() {
   }
 
   async function handleShare() {
-    if (navigator.share) await navigator.share({ title: `${student.name} - মার্কশিট`, text: `রোল: ${student.roll} | CGPA: ${result.cgpa.toFixed(2)}` })
+    if (navigator.share) await navigator.share({
+      title: `${student.name} - মার্কশিট`,
+      text: `রোল: ${student.roll} | CGPA: ${result.cgpa.toFixed(2)}`,
+    })
   }
 
   async function handlePDF() {
     setBusy(true)
     try { await generatePDF(student, `marksheet_${student.name}_${student.roll}.pdf`) }
-    catch { window.print() }
+    catch(e) { alert('PDF error: ' + e.message) }
     setBusy(false)
   }
 
-  if (loading) return <div className="flex items-center justify-center h-64"><div className="w-8 h-8 rounded-full border-2 border-gold-500 border-t-transparent animate-spin"/></div>
+  if (loading) return (
+    <div className="flex items-center justify-center h-64">
+      <div className="w-8 h-8 rounded-full border-2 border-gold-500 border-t-transparent animate-spin"/>
+    </div>
+  )
   if (!student) return <div className="text-center py-20 text-slate-500 bangla">তথ্য পাওয়া যায়নি</div>
 
   return (
@@ -50,24 +57,24 @@ export default function Marksheet() {
       <style>{`
         @import url('https://fonts.maateen.me/kalpurush/font.css');
         @media print {
-          .no-print{display:none!important}
-          body,html{background:white!important;margin:0!important;padding:0!important}
-          .print-outer{padding:0!important;overflow:visible!important}
-          @page{size:A4 portrait;margin:0}
-          *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+          .no-print { display:none !important; }
+          body, html { background:white !important; margin:0 !important; padding:0 !important; }
+          .print-outer { padding:0 !important; overflow:visible !important; }
+          @page { size:A4 portrait; margin:0; }
+          * { -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
         }
       `}</style>
 
       <div className="no-print sticky top-0 z-30 glass-dark px-4 py-3 flex items-center gap-2">
-        <button onClick={()=>navigate(-1)} className="w-9 h-9 glass rounded-xl flex items-center justify-center"><ArrowLeft size={18}/></button>
+        <button onClick={() => navigate(-1)} className="w-9 h-9 glass rounded-xl flex items-center justify-center"><ArrowLeft size={18}/></button>
         <span className="flex-1 text-sm font-semibold text-white bangla truncate">{student.name}</span>
-        <button onClick={()=>navigate(`/edit/${id}`)} className="w-9 h-9 glass rounded-xl flex items-center justify-center text-blue-400"><Pencil size={15}/></button>
+        <button onClick={() => navigate(`/edit/${id}`)} className="w-9 h-9 glass rounded-xl flex items-center justify-center text-blue-400"><Pencil size={15}/></button>
         <button onClick={handleShare} className="w-9 h-9 glass rounded-xl flex items-center justify-center text-slate-400"><Share2 size={16}/></button>
         <button onClick={handleDelete} className="w-9 h-9 glass rounded-xl flex items-center justify-center text-rose-400"><Trash2 size={15}/></button>
         <button onClick={handlePDF} disabled={busy} className="btn-primary flex items-center gap-1.5 py-2 px-3 text-sm bangla disabled:opacity-60">
-          <Download size={15}/>{busy?'...':'PDF'}
+          <Download size={15}/>{busy ? '...' : 'PDF'}
         </button>
-        <button onClick={()=>window.print()} className="glass flex items-center gap-1.5 py-2 px-3 text-sm bangla text-slate-300 rounded-xl">
+        <button onClick={() => window.print()} className="glass flex items-center gap-1.5 py-2 px-3 text-sm bangla text-slate-300 rounded-xl">
           <Printer size={15}/>প্রিন্ট
         </button>
       </div>
