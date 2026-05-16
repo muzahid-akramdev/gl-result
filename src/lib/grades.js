@@ -29,20 +29,106 @@ export const cgpaGrade = c => {
 export const EXAM_TYPES = ['প্রথম সাময়িক পরীক্ষা', 'নির্বাচনি পরীক্ষা', 'বার্ষিক পরীক্ষা']
 
 export const CLASS_GROUPS = {
-  '6':  {label:'ষষ্ঠ',   group:'6-8'},
-  '7':  {label:'সপ্তম',  group:'6-8'},
-  '8':  {label:'অষ্টম',  group:'6-8'},
-  '9':  {label:'নবম',    group:'9-10'},
-  '10': {label:'দশম',    group:'9-10'},
+  'play':     { label: 'প্লে',       group: 'play-nursery' },
+  'nursery':  { label: 'নার্সারি',   group: 'play-nursery' },
+  '1':        { label: 'প্রথম',      group: '1st' },
+  '2':        { label: 'দ্বিতীয়',   group: '2nd' },
+  '3':        { label: 'তৃতীয়',     group: '3rd' },
+  '4':        { label: 'চতুর্থ',     group: '4th' },
+  '5':        { label: 'পঞ্চম',      group: '5th' },
+  '6':        { label: 'ষষ্ঠ',       group: '6-8' },
+  '7':        { label: 'সপ্তম',      group: '6-8' },
+  '8':        { label: 'অষ্টম',      group: '6-8' },
+  '9':        { label: 'নবম',        group: '9-10' },
+  '10':       { label: 'দশম',        group: '9-10' },
 }
 
-// Class 6-8: 10 subjects
-// Col map (0-indexed from Excel row): C=2,D=3 বাং১ | E=4,F=5 বাং২ | G=6 ইং১ | H=7 ইং২
-// I=8,J=9 গণিত | K=10,L=11 বিজ্ঞান | M=12,N=13 বাওবি | O=14,P=15 ইসলাম
-// Q=16,R=17 কৃষি | S=18 তথ্যপ্রযুক্তি
+// ── Play & Nursery ──
+// বাংলা, গণিত, ইংরেজি, ধর্ম, ছবি অংকন, সাধারণ জ্ঞান (100/100/100/100/50/50)
+export const SUBJECTS_PLAY = [
+  { key:'bangla',   label:'বাংলা',         naib:null, written:'bangla1_written',  type:1, max:100 },
+  { key:'math',     label:'গণিত',          naib:null, written:'math_written',     type:1, max:100 },
+  { key:'english',  label:'ইংরেজি',        naib:null, written:'english1',         type:1, max:100 },
+  { key:'islam',    label:'ধর্ম',          naib:null, written:'islam_written',    type:1, max:100 },
+  { key:'drawing',  label:'ছবি অংকন',     naib:null, written:'bgst_written',     type:2, max:50  },
+  { key:'gk',       label:'সাধারণ জ্ঞান', naib:null, written:'krishi_written',   type:2, max:50  },
+]
+
+// ── Class 1 ──
+// বাংলা, ইংরেজি, গণিত, পরিবেশ, ধর্ম, সাধারণ জ্ঞান, ছবি অংকন (100/100/100/100/100/50/50)
+export const SUBJECTS_1 = [
+  { key:'bangla',    label:'বাংলা',              naib:null, written:'bangla1_written',  type:1, max:100 },
+  { key:'english',   label:'ইংরেজি',             naib:null, written:'english1',         type:1, max:100 },
+  { key:'math',      label:'গণিত',               naib:null, written:'math_written',     type:1, max:100 },
+  { key:'poribesh',  label:'পরিবেশ পরিচিতি',    naib:null, written:'science_written',  type:1, max:100 },
+  { key:'islam',     label:'ধর্ম',               naib:null, written:'islam_written',    type:1, max:100 },
+  { key:'gk',        label:'সাধারণ জ্ঞান',       naib:null, written:'krishi_written',   type:2, max:50  },
+  { key:'drawing',   label:'ছবি অংকন',          naib:null, written:'bgst_written',     type:2, max:50  },
+]
+
+// ── Class 2 ──
+// বাং১, বাং২, ইং১, ইং২, গণিত, পরিবেশ, ধর্ম, কম্পিউটার, সাধারণ, ছবি
+// 100 / 50  / 100/ 50 / 100  / 100   / 100 / 50        / 50     / 50
+export const SUBJECTS_2 = [
+  { key:'bangla1',   label:'বাংলা প্রথম পত্র',     naib:null, written:'bangla1_written',  type:1, max:100 },
+  { key:'bangla2',   label:'বাংলা দ্বিতীয় পত্র',  naib:null, written:'bangla2_written',  type:2, max:50  },
+  { key:'english1',  label:'ইংরেজি প্রথম পত্র',    naib:null, written:'english1',         type:1, max:100 },
+  { key:'english2',  label:'ইংরেজি দ্বিতীয় পত্র', naib:null, written:'english2',         type:2, max:50  },
+  { key:'math',      label:'গণিত',                  naib:null, written:'math_written',     type:1, max:100 },
+  { key:'poribesh',  label:'পরিবেশ পরিচিতি',       naib:null, written:'science_written',  type:1, max:100 },
+  { key:'islam',     label:'ধর্ম',                  naib:null, written:'islam_written',    type:1, max:100 },
+  { key:'computer',  label:'কম্পিউটার',             naib:null, written:'ict',              type:2, max:50  },
+  { key:'gk',        label:'সাধারণ জ্ঞান',          naib:null, written:'krishi_written',   type:2, max:50  },
+  { key:'drawing',   label:'ছবি অংকন',             naib:null, written:'bgst_written',     type:2, max:50  },
+]
+
+// ── Class 3 ──
+// বাং১, বাং২, ইং১, ইং২, গণিত, বিজ্ঞান, পরিবেশ, ধর্ম, কম্পিউটার, সাধারণ, ছবি
+// 100 / 100 / 100/ 100/ 100  / 100   / 100   / 100 / 50        / 50     / 50
+export const SUBJECTS_3 = [
+  { key:'bangla1',   label:'বাংলা প্রথম পত্র',     naib:null, written:'bangla1_written',  type:1, max:100 },
+  { key:'bangla2',   label:'বাংলা দ্বিতীয় পত্র',  naib:null, written:'bangla2_written',  type:1, max:100 },
+  { key:'english1',  label:'ইংরেজি প্রথম পত্র',    naib:null, written:'english1',         type:1, max:100 },
+  { key:'english2',  label:'ইংরেজি দ্বিতীয় পত্র', naib:null, written:'english2',         type:1, max:100 },
+  { key:'math',      label:'গণিত',                  naib:null, written:'math_written',     type:1, max:100 },
+  { key:'science',   label:'বিজ্ঞান',               naib:null, written:'science_written',  type:1, max:100 },
+  { key:'poribesh',  label:'পরিবেশ পরিচিতি',       naib:null, written:'bgst_written',     type:1, max:100 },
+  { key:'islam',     label:'ধর্ম',                  naib:null, written:'islam_written',    type:1, max:100 },
+  { key:'computer',  label:'কম্পিউটার',             naib:null, written:'ict',              type:2, max:50  },
+  { key:'gk',        label:'সাধারণ জ্ঞান',          naib:null, written:'krishi_written',   type:2, max:50  },
+  { key:'drawing',   label:'ছবি অংকন',             naib:null, written:'physics_written',  type:2, max:50  },
+]
+
+// ── Class 4 ── (তৃতীয়র মতো, ছবি অংকন বাদ)
+export const SUBJECTS_4 = [
+  { key:'bangla1',   label:'বাংলা প্রথম পত্র',     naib:null, written:'bangla1_written',  type:1, max:100 },
+  { key:'bangla2',   label:'বাংলা দ্বিতীয় পত্র',  naib:null, written:'bangla2_written',  type:1, max:100 },
+  { key:'english1',  label:'ইংরেজি প্রথম পত্র',    naib:null, written:'english1',         type:1, max:100 },
+  { key:'english2',  label:'ইংরেজি দ্বিতীয় পত্র', naib:null, written:'english2',         type:1, max:100 },
+  { key:'math',      label:'গণিত',                  naib:null, written:'math_written',     type:1, max:100 },
+  { key:'science',   label:'বিজ্ঞান',               naib:null, written:'science_written',  type:1, max:100 },
+  { key:'poribesh',  label:'পরিবেশ পরিচিতি',       naib:null, written:'bgst_written',     type:1, max:100 },
+  { key:'islam',     label:'ধর্ম',                  naib:null, written:'islam_written',    type:1, max:100 },
+  { key:'computer',  label:'কম্পিউটার',             naib:null, written:'ict',              type:2, max:50  },
+  { key:'gk',        label:'সাধারণ জ্ঞান',          naib:null, written:'krishi_written',   type:2, max:50  },
+]
+
+// ── Class 5 ── (চতুর্থর মতো, কম্পিউটার ও সাধারণ জ্ঞান বাদ)
+export const SUBJECTS_5 = [
+  { key:'bangla1',   label:'বাংলা প্রথম পত্র',     naib:null, written:'bangla1_written',  type:1, max:100 },
+  { key:'bangla2',   label:'বাংলা দ্বিতীয় পত্র',  naib:null, written:'bangla2_written',  type:1, max:100 },
+  { key:'english1',  label:'ইংরেজি প্রথম পত্র',    naib:null, written:'english1',         type:1, max:100 },
+  { key:'english2',  label:'ইংরেজি দ্বিতীয় পত্র', naib:null, written:'english2',         type:1, max:100 },
+  { key:'math',      label:'গণিত',                  naib:null, written:'math_written',     type:1, max:100 },
+  { key:'science',   label:'বিজ্ঞান',               naib:null, written:'science_written',  type:1, max:100 },
+  { key:'poribesh',  label:'পরিবেশ পরিচিতি',       naib:null, written:'bgst_written',     type:1, max:100 },
+  { key:'islam',     label:'ধর্ম',                  naib:null, written:'islam_written',    type:1, max:100 },
+]
+
+// ── Class 6-8 ──
 export const SUBJECTS_6_8 = [
   {key:'bangla1',  label:'বাংলা প্রথম পত্র',         naib:'bangla1_naib',   written:'bangla1_written',  type:1, max:100},
-  {key:'bangla2',  label:'বাংলা দ্বিতীয় পত্র',        naib:'bangla2_naib',   written:'bangla2_written',  type:2, max:50},
+  {key:'bangla2',  label:'বাংলা দ্বিতীয় পত্র',       naib:'bangla2_naib',   written:'bangla2_written',  type:2, max:50},
   {key:'english1', label:'ইংরেজি প্রথম পত্র',          naib:null,             written:'english1',         type:1, max:100},
   {key:'english2', label:'ইংরেজি দ্বিতীয় পত্র',       naib:null,             written:'english2',         type:2, max:50},
   {key:'math',     label:'গণিত',                       naib:'math_naib',      written:'math_written',     type:1, max:100},
@@ -53,10 +139,10 @@ export const SUBJECTS_6_8 = [
   {key:'ict',      label:'তথ্য প্রযুক্তি',             naib:null,             written:'ict',              type:3, max:25},
 ]
 
-// Class 9-10: 12 subjects
+// ── Class 9-10 ──
 export const SUBJECTS_9_10 = [
   {key:'bangla1',     label:'বাংলা প্রথম পত্র',          naib:'bangla1_naib',      written:'bangla1_written',      type:1, max:100},
-  {key:'bangla2',     label:'বাংলা দ্বিতীয় পত্র',         naib:'bangla2_naib',      written:'bangla2_written',      type:2, max:50},
+  {key:'bangla2',     label:'বাংলা দ্বিতীয় পত্র',        naib:'bangla2_naib',      written:'bangla2_written',      type:2, max:50},
   {key:'english1',    label:'ইংরেজি প্রথম পত্র',           naib:null,                written:'english1',             type:1, max:100},
   {key:'english2',    label:'ইংরেজি দ্বিতীয় পত্র',        naib:null,                written:'english2',             type:2, max:50},
   {key:'math',        label:'গণিত',                        naib:'math_naib',         written:'math_written',         type:1, max:100},
@@ -69,8 +155,17 @@ export const SUBJECTS_9_10 = [
   {key:'ict',         label:'তথ্য ও যোগাযোগ প্রযুক্তি',  naib:null,                written:'ict',                  type:3, max:25},
 ]
 
-export const getSubjects = (classNum) =>
-  CLASS_GROUPS[String(classNum)]?.group === '6-8' ? SUBJECTS_6_8 : SUBJECTS_9_10
+export const getSubjects = (classNum) => {
+  const g = CLASS_GROUPS[String(classNum)]?.group
+  if (g === 'play-nursery') return SUBJECTS_PLAY
+  if (g === '1st')  return SUBJECTS_1
+  if (g === '2nd')  return SUBJECTS_2
+  if (g === '3rd')  return SUBJECTS_3
+  if (g === '4th')  return SUBJECTS_4
+  if (g === '5th')  return SUBJECTS_5
+  if (g === '6-8')  return SUBJECTS_6_8
+  return SUBJECTS_9_10
+}
 
 export const calcResult = (student) => {
   const subjects = getSubjects(student.class_num || '9')
@@ -82,19 +177,34 @@ export const calcResult = (student) => {
     const gpa     = gradeToGPA(grade)
     return {...s, naib, written, total, grade, gpa}
   })
+
+  const isLowerClass = ['play-nursery','1st','2nd','3rd','4th','5th'].includes(CLASS_GROUPS[String(student.class_num)]?.group)
+
   const anyFail    = computed.some(s => s.grade==='F')
   const totalMarks = computed.reduce((a,s)=>a+s.total,0)
   const sumGPA     = computed.reduce((a,s)=>a+s.gpa,0)
   const n          = computed.length
   let cgpa = 0
+
   if (!anyFail) {
-    const fourth   = computed.find(s=>s.isFourth)
-    const others   = computed.filter(s=>!s.isFourth)
-    const minOther = Math.min(...others.map(s=>s.gpa))
-    cgpa = Math.min(5,(sumGPA+Math.min(fourth?.gpa??0,minOther))/n)
-    cgpa = Math.round(cgpa*100)/100
+    if (isLowerClass) {
+      // No 4th subject for lower classes — simple average
+      cgpa = Math.min(5, Math.round((sumGPA / n)*100)/100)
+    } else {
+      const fourth   = computed.find(s=>s.isFourth)
+      const others   = computed.filter(s=>!s.isFourth)
+      const minOther = Math.min(...others.map(s=>s.gpa))
+      cgpa = Math.min(5,(sumGPA+Math.min(fourth?.gpa??0,minOther))/n)
+      cgpa = Math.round(cgpa*100)/100
+    }
   }
-  return {subjects:computed, totalMarks, anyFail, cgpa, cgpaGrade:cgpaGrade(cgpa), passed:!anyFail&&cgpa>=2}
+
+  return {
+    subjects: computed, totalMarks, anyFail, cgpa,
+    cgpaGrade: cgpaGrade(cgpa),
+    passed: !anyFail && cgpa >= 2,
+    isLowerClass,
+  }
 }
 
 export const GRADE_COLORS = {
