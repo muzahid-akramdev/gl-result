@@ -5,6 +5,7 @@ import SetupPage from './pages/SetupPage'
 import Dashboard from './pages/Dashboard'
 import StudentList from './pages/StudentList'
 import AddStudent from './pages/AddStudent'
+import EditStudent from './pages/EditStudent'
 import Marksheet from './pages/Marksheet'
 import Upload from './pages/Upload'
 
@@ -17,6 +18,7 @@ export default function App() {
           <Route index element={<Dashboard />} />
           <Route path="students" element={<StudentList />} />
           <Route path="add" element={<AddStudent />} />
+          <Route path="edit/:id" element={<EditStudent />} />
           <Route path="marksheet/:id" element={<Marksheet />} />
           <Route path="upload" element={<Upload />} />
           <Route path="*" element={<Navigate to="/" />} />
